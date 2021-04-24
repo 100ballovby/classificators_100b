@@ -25,7 +25,7 @@ def sep_by_class(dataset):
         v = dataset[item]
         if v[-1] not in separated_data:
             separated_data[v[-1]] = []
-            separated_data[v[-1]].append(v)
+        separated_data[v[-1]].append(v)
     return separated_data
 
 def mean(numbers):
@@ -99,12 +99,12 @@ def main():
     1. Тренировочные данные: {len(train_data)}
     2. Тестовое данные: {len(test_data)}''')
     summaries = sum_classes(train_data)
-    print(summaries)
 
-    #prediction = get_prediction(summaries, test_data)
 
-    #accuracy = get_accuracy(test_data, prediction)
-    #print(f'Точность: {accuracy}')
+    prediction = get_prediction(summaries, test_data)
+
+    accuracy = get_accuracy(test_data, prediction)
+    print(f'Точность: {accuracy}')
 
 
 if __name__ == '__main__':
