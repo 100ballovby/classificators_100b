@@ -93,7 +93,7 @@ def get_accuracy(test_data, predictions):
 def main():
     filename = 'pima-indians-diabetes.csv'
     dataset = load_data(filename)
-    ratio = 0.57
+    ratio = 0.67
     train_data, test_data = spit_data(dataset, ratio)
     print(f'''Разделено {len(dataset)} строк? на:
     1. Тренировочные данные: {len(train_data)}
