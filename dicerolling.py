@@ -11,7 +11,7 @@ class Dice(Suite):
             return 0
         else:
             return 1.0 / hypo
-
+'''
 s = Dice([4, 6, 8, 12, 20])
 s.Update(6)  # если подбросили кубик и получили 6
 print('После подбрасывания куба и выпадения 6')
@@ -21,4 +21,4 @@ for roll in [6, 5, 7, 6, 7, 3]:
     s.Update(roll)
 
 print('\n\nПосле нескольких подбрасываний')
-s.Print()
+s.Print()'''
