@@ -102,4 +102,6 @@ for sentence in test_ham_labeled:
             _words.append(word)
         elif word in unique_spam_dict:
             _words.append(word)
-    reduced_spam_test.append(_words)
+    reduced_ham_test.append(_words)
+
+print(reduced_ham_test)
