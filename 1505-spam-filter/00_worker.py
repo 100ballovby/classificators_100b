@@ -78,4 +78,28 @@ for sentence in test:
     for word in sentence_as_list:
         senten.append(word)
     distinct_words_from_email.append(senten)
-print(distinct_words_from_email)
+
+
+test_spam_labeled = [distinct_words_from_email[0], distinct_words_from_email[1]]
+test_ham_labeled = [distinct_words_from_email[2], distinct_words_from_email[3]]
+
+# игнорить слова, которые ни разу не встречались в тестовых данных
+reduced_spam_test = []
+for sentence in test_spam_labeled:
+    _words = []
+    for word in sentence:
+        if word in unique_spam_dict:
+            _words.append(word)
+        elif word in unique_ham_dict:
+            _words.append(word)
+    reduced_spam_test.append(_words)
+
+reduced_ham_test = []
+for sentence in test_ham_labeled:
+    _words = []
+    for word in sentence:
+        if word in unique_ham_dict:
+            _words.append(word)
+        elif word in unique_spam_dict:
+            _words.append(word)
+    reduced_spam_test.append(_words)
