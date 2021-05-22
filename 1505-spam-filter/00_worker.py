@@ -4,7 +4,7 @@ train_spam = ['send your password', 'send us your account details',
 train_ham = ['your activity report', 'benefits physical activity', 'the important vows',
              'view you stats', 'renew subscription']
 test_email = {
-    'spam': ['renew your password', 'renew your account'],
+    'spam': ['renew your password', 'renew your account', 'send to us your password'],
     'ham': ['benefits of your account', 'the importance of physical activity']
 }
 
@@ -104,4 +104,81 @@ for sentence in test_ham_labeled:
             _words.append(word)
     reduced_ham_test.append(_words)
 
-print(reduced_ham_test)
+test_spam_nk = []  # все, но без не ключевых слов
+non_key = ['us', 'the', 'your', 'and',
+            'of', 'a', 'an']
+for email in reduced_spam_test:
+    email_nk = []
+    for word in email:
+        if word in non_key:
+            pass
+        else:
+            email_nk.append(word)
+    test_spam_nk.append(email_nk)
+print(test_spam_nk)
+
+# #################3
+test_ham_nk = []  # все, но без не ключевых слов
+for email in reduced_ham_test:
+    email_nk = []
+    for word in email:
+        if word in non_key:
+            pass
+        else:
+            email_nk.append(word)
+    test_ham_nk.append(email_nk)
+print(test_ham_nk)
+
+
+def mult(list_):
+    """Будем перемножать все вероятности"""
+    total_prob = 1  # идеальная вероятность - это 1
+    for i in list_:
+        total_prob *= i
+    return total_prob
+
+
+def Bayes(email):
+    """Сам классификатор"""
+    probabilities = []
+    for word in email:
+        pr_s = prob_spam
+        print(f'Общая спамность {pr_s}')
+        try:
+            pr_WS = dict_spamicity[word]
+            print(f'Вероятность, что {word} спам = {pr_WS}')
+        except KeyError:
+            pr_WS = 1 / (total_spam + 2)
+            ''' Применяю сглаживание для слов, которых нет в тренировочном 
+            спаме, но есть в тренировочном хам '''
+            print(f'Вероятность, что {word} спам = {pr_WS}')
+
+        pr_h = prob_ham
+        print(f'Общая спамность {pr_h}')
+        try:
+            pr_WH = dict_hamicity[word]  # вероятность хамности слова
+            print(f'Вероятность, что {word} ham = {pr_WH}')
+        except KeyError:
+            pr_WH = 1 / (total_ham + 2)
+            ''' Применяю сглаживание для слов, которых нет в тренировочном 
+            спаме, но есть в тренировочном хам '''
+            print(f'Вероятность, что {word} ham = {pr_WH}')
+
+        prob_word_spam_BAYES = (pr_WS * pr_s) / ((pr_WS * pr_s) + (pr_WH * pr_h))
+        print(f'Вероятность, что {word} спам (по Байесу) = {prob_word_spam_BAYES}')
+        probabilities.append(prob_word_spam_BAYES)
+    print(f'Вероятности для всех слов {probabilities}')
+    final_classification = mult(probabilities)
+    if final_classification > 0.5:
+        print(f'Email - спам на {final_classification * 100}%')
+    else:
+        print(f'Email - НЕ спам на {final_classification * 100}%')
+    return final_classification
+
+for email in test_spam_nk:
+    print()
+    all_word_prob = Bayes(email)
+
+for email in test_ham_nk:
+    print()
+    all_word_prob = Bayes(email)
